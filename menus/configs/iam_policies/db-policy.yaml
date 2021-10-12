@@ -1,0 +1,15 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:PutItem",
+                "dynamodb:GetItem"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+
+# Attach to DB role with:  aws iam put-role-policy --role-name lambda-exec-role --policy-name dynamodb-item-crud-role --policy-document file://db-policy.json
