@@ -15,7 +15,7 @@ generationally
 env GOOS=linux GOARCH=amd64 go build -o /tmp/main menus
 zip -j main.zip /tmp/main
 
-aws lambda update-function-code --function-name menus --zip-file fileb:///Users/isaiahbelle/Dev/gourmeals/aws_examples/lambda/go_api/menus/main.zip
+aws lambda update-function-code --function-name menus --zip-file fileb://main.zip
 
 # Call that shit
 aws lambda invoke --function-name menus ./tmp.yaml
@@ -124,3 +124,65 @@ aws apigateway test-invoke-method --rest-api-id ooyqsymb9g --resource-id 8zmr8h 
     - InternalServerErrorException
   status: 502
 # Error with rendered response, need to modify function to render API-Gateway Friendly response.
+
+
+# Now call it again
+aws apigateway test-invoke-method --rest-api-id ooyqsymb9g --resource-id 8zmr8h --http-method "GET" --path-with-query-string "/menus?menuid=888-123454249"
+
+- body: '{"menuid":"888-123454249","restaurant":"Roma","cusisine":"Italian"}'
+  headers:
+    X-Amzn-Trace-Id: Root=1-616607b3-b53f9cf80107832ac68ee679;Sampled=0
+  latency: 407
+  log: "Execution log for request 5f1b41cd-6b45-4c94-8bac-8e9f118420cb\nTue Oct 12
+    22:09:55 UTC 2021 : Starting execution for request: 5f1b41cd-6b45-4c94-8bac-8e9f118420cb\nTue
+    Oct 12 22:09:55 UTC 2021 : HTTP Method: GET, Resource Path: /menus\nTue Oct 12
+    22:09:55 UTC 2021 : Method request path: {}\nTue Oct 12 22:09:55 UTC 2021 : Method
+    request query string: {menuid=888-123454249}\nTue Oct 12 22:09:55 UTC 2021 : Method
+    request headers: {}\nTue Oct 12 22:09:55 UTC 2021 : Method request body before
+    transformations: \nTue Oct 12 22:09:55 UTC 2021 : Endpoint request URI: https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/arn:aws:lambda:us-east-1:562697480070:function:menus/invocations\nTue
+    Oct 12 22:09:55 UTC 2021 : Endpoint request headers: {X-Amz-Date=20211012T220955Z,
+    x-amzn-apigateway-api-id=ooyqsymb9g, Accept=application/json, User-Agent=AmazonAPIGateway_ooyqsymb9g,
+    Host=lambda.us-east-1.amazonaws.com, X-Amz-Content-Sha256=9b64c6c11f115e65b768521d207a3ce9c2bac029027ee58fcfae2bdc091d1fc3,
+    X-Amzn-Trace-Id=Root=1-616607b3-b53f9cf80107832ac68ee679, x-amzn-lambda-integration-tag=5f1b41cd-6b45-4c94-8bac-8e9f118420cb,
+    Authorization=*********************************************************************************************************************************************************************************************************************************************************************************************************************************************faf230,
+    X-Amz-Source-Arn=arn:aws:execute-api:us-east-1:562697480070:ooyqsymb9g/test-invoke-stage/GET/menus,
+    X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJb//////////wEaCXVzLWVhc3QtMSJFMEMCIH6fzkjGy2aIUEPYpvZKo8SXGRGn/AtXGutWpJ7UHAljAh9Rbcn3SqOad6Qb4/DMxbBLpsdX7juiJTvK2H15d4GD
+    [TRUNCATED]\nTue Oct 12 22:09:55 UTC 2021 : Endpoint request body after transformations:
+    {\"resource\":\"/menus\",\"path\":\"/menus\",\"httpMethod\":\"GET\",\"headers\":null,\"multiValueHeaders\":null,\"queryStringParameters\":{\"menuid\":\"888-123454249\"},\"multiValueQueryStringParameters\":{\"menuid\":[\"888-123454249\"]},\"pathParameters\":null,\"stageVariables\":null,\"requestContext\":{\"resourceId\":\"8zmr8h\",\"resourcePath\":\"/menus\",\"httpMethod\":\"GET\",\"extendedRequestId\":\"HHYkJGADIAMFjSQ=\",\"requestTime\":\"12/Oct/2021:22:09:55
+    +0000\",\"path\":\"/menus\",\"accountId\":\"562697480070\",\"protocol\":\"HTTP/1.1\",\"stage\":\"test-invoke-stage\",\"domainPrefix\":\"testPrefix\",\"requestTimeEpoch\":1634076595941,\"requestId\":\"5f1b41cd-6b45-4c94-8bac-8e9f118420cb\",\"identity\":{\"cognitoIdentityPoolId\":null,\"cognitoIdentityId\":null,\"apiKey\":\"test-invoke-api-key\",\"principalOrgId\":null,\"cognitoAuthenticationType\":null,\"userArn\":\"arn:aws:iam::562697480070:user/dev_system_account\",\"apiKeyId\":\"test-invoke-api-key-id\",\"userAgent\":\"aws-cli/2.2.43
+    Python/3.9.7 Darwin/20.6.0 source/x86_64 prompt/off command/apigateway.test-i
+    [TRUNCATED]\nTue Oct 12 22:09:55 UTC 2021 : Sending request to https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/arn:aws:lambda:us-east-1:562697480070:function:menus/invocations\nTue
+    Oct 12 22:09:56 UTC 2021 : Received response. Status: 200, Integration latency:
+    403 ms\nTue Oct 12 22:09:56 UTC 2021 : Endpoint response headers: {Date=Tue, 12
+    Oct 2021 22:09:56 GMT, Content-Type=application/json, Content-Length=147, Connection=keep-alive,
+    x-amzn-RequestId=71bd26f5-2066-43c9-a3c8-566bb9c114b0, x-amzn-Remapped-Content-Length=0,
+    X-Amz-Executed-Version=$LATEST, X-Amzn-Trace-Id=root=1-616607b3-b53f9cf80107832ac68ee679;sampled=0}\nTue
+    Oct 12 22:09:56 UTC 2021 : Endpoint response body before transformations: {\"statusCode\":200,\"headers\":null,\"multiValueHeaders\":null,\"body\":\"{\\\"menuid\\\":\\\"888-123454249\\\",\\\"restaurant\\\":\\\"Roma\\\",\\\"cusisine\\\":\\\"Italian\\\"}\"}\nTue
+    Oct 12 22:09:56 UTC 2021 : Method response body after transformations: {\"menuid\":\"888-123454249\",\"restaurant\":\"Roma\",\"cusisine\":\"Italian\"}\nTue
+    Oct 12 22:09:56 UTC 2021 : Method response headers: {X-Amzn-Trace-Id=Root=1-616607b3-b53f9cf80107832ac68ee679;Sampled=0}\nTue
+    Oct 12 22:09:56 UTC 2021 : Successfully completed execution\nTue Oct 12 22:09:56
+    UTC 2021 : Method completed with status: 200\n"
+  multiValueHeaders:
+    X-Amzn-Trace-Id:
+    - Root=1-616607b3-b53f9cf80107832ac68ee679;Sampled=0
+  status: 200
+
+# Check cloudwatch logs
+aws logs filter-log-events --log-group-name /aws/lambda/menus --filter-pattern "ERROR"
+
+# Deploy that bitch
+# First to staging
+aws apigateway create-deployment --rest-api-id ooyqsymb9g --stage-name staging
+- createdDate: '2021-10-12T18:17:27-04:00'
+  id: an7amt
+
+# THIS FAILS
+curl https://ooyqsymb9g.execute-api.us-east-1.amazonaws.com/staging/menus?isbn=978-1420931693
+
+{"message":"Missing Authentication Token"}
+
+# Install tool to curl with signed requests: https://github.com/okigan/awscurl
+brew install awscurl
+
+awscurl    --service execute-api -v https://ooyqsymb9g.execute-api.us-east-1.amazonaws.com/staging/menus?menuid=888-123454249
+
