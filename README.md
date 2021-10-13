@@ -1,5 +1,6 @@
 # AWS Lambda Go API via API Gateway with IAM API Authorization
-This is an example go based Lambda API using Amazon API Gateway (with IAM autorization) and Dynamo DB. Dynamo DB config can be subsituted for approriate RDS/MySQL config in production. Function is desinged service style e.g. one function will handle multiple actions and HTTP methods GET, POST etc.
+This is an example go based Lambda API using Amazon API Gateway (with IAM authorization) and Dynamo DB. Dynamo DB config can be substituted for approriate RDS/MySQL config in production. Function is designed service style e.g. one function will handle multiple actions and HTTP methods GET, POST etc.
+
 Other Lambda configurations are discussed [here](https://www.serverless.com/blog/serverless-architecture-code-patterns/).
 
 ## Overview 
@@ -53,7 +54,7 @@ $ aws iam attach-role-policy --role-name lambda-exec-role --policy-arn arn:aws:i
 $ aws iam put-role-policy --role-name lambda-exec-role --policy-name dynamodb-item-crud-role --policy-document file://db-policy.json
 ```
 
-## Ceate Function and Upload Function
+## Create Function and Upload Function
 1. Build source and Create Function 
 ```bash
 $ env GOOS=linux GOARCH=amd64 go build -o /tmp/main menus
@@ -125,8 +126,7 @@ $ aws apigateway put-method --rest-api-id <my-rest-api-id> --resource-id <menus-
   httpMethod: ANY
 ```
 
-1. Integrate with Lambda function and assign the API Gateway permissions to execute:
-
+1. Integrate with Lambda function and assign the API Gateway permissions
 ```bash
 $ aws apigateway put-integration --rest-api-id <my-rest-api-id> --resource-id <menus-resource-id> \
 --http-method ANY --type AWS_PROXY --integration-http-method POST --uri arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:<account-id>:function:menus/invocations
@@ -168,13 +168,13 @@ $  curl https://<my-rest-api-id>.execute-api.us-east-1.amazonaws.com/staging/men
 ```
 
 
-1. Using a signed request for authorized AWS user (in this case default aws-cli configured user  configured in ~/.aws/credentials) returs expected result.
+1. Using a signed request for authorized AWS user (in this case default aws-cli configured user  configured in ~/.aws/credentials) returns expected result.
 ```bash
 $ awscurl --service execute-api https://<my-rest-api-id>.execute-api.us-east-1.amazonaws.com/staging/menus?menuid=978-1420931693
 {"menuid":"888-123454249","restaurant":"Roma","cuisine":"Italian"}
 ```
 ## Notes
-* Gateway method authorization supports COGNITO_USER_POOLS.
+* Gateway method authorization supports [COGNITO_USER_POOLS](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-integrate-with-cognito.html).
 * While regional endpoint deployments are possible, this API gateway is [edge optimized](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-endpoint-types.html)  
 * For Production we should [consider canary release deployments](https://docs.aws.amazon.com/apigateway/latest/developerguide/canary-release.html)
 * We should have API release stages to mirror/track App release stages, particularlly for UAT and DEV. This will alow more controll over access, throttling and logging in those environments. 
