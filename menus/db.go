@@ -45,3 +45,23 @@ func getItem(menuid string) (*menu, error) {
 
 	return mn, nil
 }
+
+func putItem(mn *menu) error {
+	input := &dynamodb.PutItemInput{
+		TableName: aws.String("Menus"),
+		Item: map[string]*dynamodb.AttributeValue{
+			"MENUID": {
+				S: aws.String(mn.MENUID),
+			},
+			"Restaurant": {
+				S: aws.String(mn.Restaurant),
+			},
+			"Cuisine": {
+				S: aws.String(mn.Cuisine),
+			},
+		},
+	}
+
+	_, err := db.PutItem(input)
+	return err
+}

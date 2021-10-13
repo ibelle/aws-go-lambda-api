@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -17,7 +18,7 @@ var errorLogger = log.New(os.Stderr, "ERROR ", log.Llongfile)
 type menu struct {
 	MENUID     string `json:"menuid"`
 	Restaurant string `json:"restaurant"`
-	Cuisine    string `json:"cusisine"`
+	Cuisine    string `json:"cuisine"`
 }
 
 func show(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -68,6 +69,46 @@ func clientError(status int) (events.APIGatewayProxyResponse, error) {
 	}, nil
 }
 
+func create(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	if req.Headers["content-type"] != "application/json" && req.Headers["Content-Type"] != "application/json" {
+		return clientError(http.StatusNotAcceptable)
+	}
+
+	mn := new(menu)
+	err := json.Unmarshal([]byte(req.Body), mn)
+	if err != nil {
+		return clientError(http.StatusUnprocessableEntity)
+	}
+
+	if !menuidRegex.MatchString(mn.MENUID) {
+		return clientError(http.StatusBadRequest)
+	}
+	if mn.Restaurant == "" || mn.Cuisine == "" {
+		return clientError(http.StatusBadRequest)
+	}
+
+	err = putItem(mn)
+	if err != nil {
+		return serverError(err)
+	}
+
+	return events.APIGatewayProxyResponse{
+		StatusCode: 201,
+		Headers:    map[string]string{"Location": fmt.Sprintf("/books?isbn=%s", mn.MENUID)},
+	}, nil
+}
+
+func router(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	switch req.HTTPMethod {
+	case "GET":
+		return show(req)
+	case "POST":
+		return create(req)
+	default:
+		return clientError(http.StatusMethodNotAllowed)
+	}
+}
+
 func main() {
-	lambda.Start(show)
+	lambda.Start(router)
 }
