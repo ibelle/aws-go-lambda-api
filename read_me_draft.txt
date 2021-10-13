@@ -25,9 +25,9 @@ aws lambda invoke --function-name menus ./tmp.yaml
 --key-schema AttributeName=MENUID,KeyType=HASH \
 --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
 
-aws dynamodb put-item --table-name Menus --item '{"MENUID":{"S": "978-1420931693"}, "restaurant":{"S": "The Republic"}, "cusisine":{"S": "Ameican-Casual"}}'
+aws dynamodb put-item --table-name Menus --item '{"MENUID":{"S": "978-1420931693"}, "restaurant":{"S": "The Republic"}, "cuisine":{"S": "Ameican-Casual"}}'
 
-aws dynamodb put-item --table-name Menus --item '{"MENUID":{"S": "888-123454249"}, "restaurant":{"S": "Roma"}, "cusisine":{"S": "Italian"}}'
+aws dynamodb put-item --table-name Menus --item '{"MENUID":{"S": "888-123454249"}, "restaurant":{"S": "Roma"}, "cuisine":{"S": "Italian"}}'
 
 
 # Query: aws dynamodb get-item --table-name Menus --key='{"MENUID": {"S": "978-1420931693"}}'
@@ -129,7 +129,7 @@ aws apigateway test-invoke-method --rest-api-id ooyqsymb9g --resource-id 8zmr8h 
 # Now call it again
 aws apigateway test-invoke-method --rest-api-id ooyqsymb9g --resource-id 8zmr8h --http-method "GET" --path-with-query-string "/menus?menuid=888-123454249"
 
-- body: '{"menuid":"888-123454249","restaurant":"Roma","cusisine":"Italian"}'
+- body: '{"menuid":"888-123454249","restaurant":"Roma","cuisine":"Italian"}'
   headers:
     X-Amzn-Trace-Id: Root=1-616607b3-b53f9cf80107832ac68ee679;Sampled=0
   latency: 407
@@ -186,3 +186,6 @@ brew install awscurl
 
 awscurl    --service execute-api -v https://ooyqsymb9g.execute-api.us-east-1.amazonaws.com/staging/menus?menuid=888-123454249
 
+
+# Now test Post
+ awscurl --service execute-api -X POST -d '{"menuid":"978-0141439587", "restaurant":"New Jamacia", "Cuisine": "Carribean"}' https://ooyqsymb9g.execute-api.us-east-1.amazonaws.com/staging/menus
