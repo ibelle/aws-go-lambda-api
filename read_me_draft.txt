@@ -188,4 +188,9 @@ awscurl    --service execute-api -v https://ooyqsymb9g.execute-api.us-east-1.ama
 
 
 # Now test Post
- awscurl --service execute-api -X POST -d '{"menuid":"978-0141439587", "restaurant":"New Jamacia", "Cuisine": "Carribean"}' https://ooyqsymb9g.execute-api.us-east-1.amazonaws.com/staging/menus
+ awscurl --service execute-api -X POST -d '{"menuid":"978-0141439587", "restaurant":"New Jamacia", "cuisine": "Carribean"}' https://ooyqsymb9g.execute-api.us-east-1.amazonaws.com/staging/menus
+
+ TODO:
+ Export API_Access_Group
+ Export  dev_system_account
+ Export  lambda-exec-role
