@@ -1,0 +1,32 @@
+{
+    "AttachedPolicies": [
+        {
+            "PolicyName": "AdministratorAccess",
+            "PolicyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+        },
+        {
+            "PolicyName": "AWSCodeDeployRoleForLambda",
+            "PolicyArn": "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRoleForLambda"
+        },
+        {
+            "PolicyName": "AWSLambdaExecute",
+            "PolicyArn": "arn:aws:iam::aws:policy/AWSLambdaExecute"
+        },
+        {
+            "PolicyName": "AdministratorAccess-Amplify",
+            "PolicyArn": "arn:aws:iam::aws:policy/AdministratorAccess-Amplify"
+        },
+        {
+            "PolicyName": "AdministratorAccess-AWSElasticBeanstalk",
+            "PolicyArn": "arn:aws:iam::aws:policy/AdministratorAccess-AWSElasticBeanstalk"
+        },
+        {
+            "PolicyName": "AWSLambda_FullAccess",
+            "PolicyArn": "arn:aws:iam::aws:policy/AWSLambda_FullAccess"
+        },
+        {
+            "PolicyName": "AmazonS3ObjectLambdaExecutionRolePolicy",
+            "PolicyArn": "arn:aws:iam::aws:policy/service-role/AmazonS3ObjectLambdaExecutionRolePolicy"
+        }
+    ]
+}

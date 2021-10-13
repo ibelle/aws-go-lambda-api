@@ -1,11 +1,3 @@
-operation page
-
-prosperity
-accellerated
-generationally
-
-	go install example.com/pkg@v1.2.3
-	go install example.com/pkg@latest
 
 
  aws lambda create-function --function-name menus --runtime go1.x --role arn:aws:iam::562697480070:role/lambda-exec-role --handler main --zip-file fileb:///Users/isaiahbelle/Dev/gourmeals/aws_examples/lambda/go_api/menus/main.zip
@@ -177,7 +169,7 @@ aws apigateway create-deployment --rest-api-id ooyqsymb9g --stage-name staging
   id: an7amt
 
 # THIS FAILS
-curl https://ooyqsymb9g.execute-api.us-east-1.amazonaws.com/staging/menus?isbn=978-1420931693
+curl https://ooyqsymb9g.execute-api.us-east-1.amazonaws.com/staging/menus?menuid=978-1420931693
 
 {"message":"Missing Authentication Token"}
 
