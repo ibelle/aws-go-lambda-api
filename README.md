@@ -3,7 +3,7 @@ This is an example go based Lambda API using Amazon API Gateway (with IAM autori
 Other Lambda configurations are discussed [here](https://www.serverless.com/blog/serverless-architecture-code-patterns/).
 
 ## Overview 
-(Diagram)
+![Diagram](AWS_LAMBDA.png)
 
 
 ## Pre-requisites
