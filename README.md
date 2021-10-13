@@ -1,7 +1,8 @@
 # AWS Lambda Go API via API Gateway with IAM API Authorization
-This is an example go based Lambda API using Amazon API Gateway (with IAM authorization) and Dynamo DB. Dynamo DB config can be substituted for approriate RDS/MySQL config in production. Function is designed service style e.g. one function will handle multiple actions and HTTP methods GET, POST etc.
+This is an example go based Lambda API using Amazon API Gateway (with IAM authorization) and Dynamo DB. Dynamo DB config can be substituted for appropriate RDS/MySQL config in production. 
 
-Other Lambda configurations are discussed [here](https://www.serverless.com/blog/serverless-architecture-code-patterns/).
+This Lambda function is designed “service style” e.g. one function will handle multiple actions and HTTP methods GET, POST etc. like a more traditional web service. Other Lambda configurations are discussed [here](https://www.serverless.com/blog/serverless-architecture-code-patterns/) but general architecture would be the same.
+
 
 ## Overview 
 ![Diagram](AWS_LAMBDA.png)
