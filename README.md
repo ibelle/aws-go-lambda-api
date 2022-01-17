@@ -38,8 +38,8 @@ This Lambda function is designed “service style” e.g. one function will hand
     ]
 }
 ```
-1. Download AWS CLI Tools: [aws-cli](https://github.com/aws/aws-cli) and [aws-sam-cli](https://github.com/aws/aws-sam-cli)
-1. Install AWS Curl Helper to make signed request against API backend (local testing): [awscurl](https://github.com/okigan/awscurl)
+2. Download AWS CLI Tools: [aws-cli](https://github.com/aws/aws-cli) and [aws-sam-cli](https://github.com/aws/aws-sam-cli)
+3. Install AWS Curl Helper to make signed request against API backend (local testing): [awscurl](https://github.com/okigan/awscurl)
 
 
 ## Set up Lambda Role (Policy Files under configs/iam_policies)
@@ -49,7 +49,7 @@ $ cd $(PROJECT_ROOT)/configs/iam_policies
 $ aws iam create-role --role-name lambda-exec-role --assume-role-policy-document file://trust-policy.yaml
 ```
    
-1. Attach Role permission polices:
+2. Attach Role permission polices:
 ```bash
 $ aws iam attach-role-policy --role-name lambda-exec-role --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 $ aws iam put-role-policy --role-name lambda-exec-role --policy-name dynamodb-item-crud-role --policy-document file://db-policy.json
@@ -64,7 +64,7 @@ $ aws lambda create-function --function-name menus --runtime go1.x \
 --role <lambda-exec-role ARN > --handler main --zip-file fileb://main.zip
 ```
 
-1. Create and pre-populate Dynamodb Table
+2. Create and pre-populate Dynamodb Table
 ```bash
 $  aws dynamodb create-table --table-name Menus \
 --attribute-definitions AttributeName=MENUID,AttributeType=S \
@@ -102,7 +102,7 @@ id: <my-rest-api-id>
 name: foodstore
 ```
 
-1. Get root api resource ID. This is used to configure integration of lambda function as API resource under the gateway
+2. Get root api resource ID. This is used to configure integration of lambda function as API resource under the gateway
 ```bash
 aws apigateway get-resources --rest-api-id <my-rest-api-id>
   - items:
@@ -110,7 +110,7 @@ aws apigateway get-resources --rest-api-id <my-rest-api-id>
     path: /
 ```
 
-1. Create new resource path for Lambda function and register the function to handle all HTTP methods (via. ANY):
+3. Create new resource path for Lambda function and register the function to handle all HTTP methods (via. ANY):
 
 ```bash
 $ aws apigateway create-resource --rest-api-id <my-rest-api-id> --parent-id <my-root-resource-id> \
@@ -127,7 +127,7 @@ $ aws apigateway put-method --rest-api-id <my-rest-api-id> --resource-id <menus-
   httpMethod: ANY
 ```
 
-1. Integrate with Lambda function and assign the API Gateway permissions
+4. Integrate with Lambda function and assign the API Gateway permissions
 ```bash
 $ aws apigateway put-integration --rest-api-id <my-rest-api-id> --resource-id <menus-resource-id> \
 --http-method ANY --type AWS_PROXY --integration-http-method POST --uri arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:<account-id>:function:menus/invocations
@@ -137,7 +137,7 @@ lambda:InvokeFunction --principal apigateway.amazonaws.com --source-arn \
 'arn:aws:execute-api:us-east-1:<account-id>:<menus-resource-id>/*/*/*'
 ```
 
-1. Test Endpoint
+5. Test Endpoint
 ```bash
 $ aws apigateway test-invoke-method --rest-api-id <my-rest-api-id> \
 --resource-id <menus-resource-id> --http-method "GET" \
@@ -160,7 +160,7 @@ $ aws apigateway create-deployment --rest-api-id  <my-rest-api-id> --stage-name 
 
 ```
 
-1. Calling URL from with unsigned request or unautorized IAM user results in error:
+2. Calling URL from with unsigned request or unautorized IAM user results in error:
 ```bash
 $  curl https://<my-rest-api-id>.execute-api.us-east-1.amazonaws.com/staging/menus?menuid=978-1420931693
 
@@ -169,7 +169,7 @@ $  curl https://<my-rest-api-id>.execute-api.us-east-1.amazonaws.com/staging/men
 ```
 
 
-1. Using a signed request for authorized AWS user (in this case default aws-cli configured user  configured in ~/.aws/credentials) returns expected result.
+3. Using a signed request for authorized AWS user (in this case default aws-cli configured user  configured in ~/.aws/credentials) returns expected result.
 ```bash
 $ awscurl --service execute-api https://<my-rest-api-id>.execute-api.us-east-1.amazonaws.com/staging/menus?menuid=978-1420931693
 {"menuid":"888-123454249","restaurant":"Roma","cuisine":"Italian"}
